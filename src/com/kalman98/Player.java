@@ -205,19 +205,20 @@ public class Player {
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_D) this.right = 1;
-		if (key == KeyEvent.VK_A) this.left = 1;
-		if (key == KeyEvent.VK_W) this.up = 1;
-		if (key == KeyEvent.VK_S) this.down = 1;
-		if (key == KeyEvent.VK_R) GameFrame.resetLevel();
+		System.out.println(key);
+		if (key == KeyEvent.VK_D || key == KeyEvent.VK_E) this.right = 1;
+		if (key == KeyEvent.VK_A || key == KeyEvent.VK_A) this.left = 1;
+		if (key == KeyEvent.VK_W || key == KeyEvent.VK_COMMA) this.up = 1;
+		if (key == KeyEvent.VK_S || key == KeyEvent.VK_O) this.down = 1;
+		if (key == KeyEvent.VK_R || key == KeyEvent.VK_P) GameFrame.resetLevel();
 	}
 	
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_D) this.right = 0;
-		if (key == KeyEvent.VK_A) this.left = 0;
-		if (key == KeyEvent.VK_W) this.up = 0;
-		if (key == KeyEvent.VK_S) this.down = 0;
+		if (key == KeyEvent.VK_D || key == KeyEvent.VK_E) this.right = 0;
+		if (key == KeyEvent.VK_A || key == KeyEvent.VK_A) this.left = 0;
+		if (key == KeyEvent.VK_W || key == KeyEvent.VK_COMMA) this.up = 0;
+		if (key == KeyEvent.VK_S || key == KeyEvent.VK_O) this.down = 0;
 	}
 	
 	
