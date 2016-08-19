@@ -64,9 +64,9 @@ public class GameFrame extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		revalidate();
 		repaint();
 		player.update();
-		
 	}
 	
 	public Tile getTileByID(int xPos, int yPos) {
@@ -123,7 +123,7 @@ public class GameFrame extends JPanel implements ActionListener {
 			TileArray = (ArrayList<ArrayTile>) in.readObject();
 			in.close();
 			fileIn.close();
-			System.out.println("FINISHED!");
+			System.out.println("Finished loading level.pal!");
 		}catch(IOException i) {
 			System.out.println("Something bad happened when loading level.pal.");
 			i.printStackTrace();
