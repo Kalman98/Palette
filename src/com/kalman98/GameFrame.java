@@ -60,7 +60,6 @@ public class GameFrame extends JPanel implements ActionListener {
 			g2d.setFont(winFont);
 			g2d.drawString("You WON!!!!?!?!?!?!?!?!", Main.frame.getWidth() / 2, Main.frame.getHeight() / 3);
 		}
-		System.out.println("Paint, paint....");
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
