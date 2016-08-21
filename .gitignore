@@ -1,5 +1,6 @@
-*.class
-.classpath
-.project
-.settings
-.git
+$ cat .gitignore
+/*
+!/src
+!.gitignore
+!/resources
+!.classpath

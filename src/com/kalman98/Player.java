@@ -173,7 +173,7 @@ public class Player {
 			boolean clear = false;
 			for (int j = 0; j < clearTiles.size(); j ++) {
 				if (GameFrame.TileArray.get(i).tile.type.contains(clearTiles.get(j))) clear = true;
-				if (GameFrame.TileArray.get(i).tile.image.contains("Spike")) spike = true;
+				//if (GameFrame.TileArray.get(i).tile.image.contains("Spike")) spike = true;
 			}
 			if (spike && !clear) {
 				if (boundsX.intersects(tiles.get(i))) {
@@ -212,7 +212,7 @@ public class Player {
 		if (key == KeyEvent.VK_R || key == KeyEvent.VK_P) GameFrame.resetLevel();
 		if (key == KeyEvent.VK_ESCAPE) {
 			System.out.println("Shutdown requested. Closing now...");
-			System.exit(0);
+			//System.exit(0);
 		}
 	}
 	
