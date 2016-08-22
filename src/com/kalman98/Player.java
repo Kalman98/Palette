@@ -211,7 +211,7 @@ public class Player {
 		if (key == KeyEvent.VK_S || key == KeyEvent.VK_O) this.down = 1;
 		if (key == KeyEvent.VK_R || key == KeyEvent.VK_P) GameFrame.resetLevel();
 		if (key == KeyEvent.VK_ESCAPE) {
-			System.out.println("Shutdown requested. Closing now...");
+			//System.out.println("Shutdown requested. Closing now...");
 			//System.exit(0);
 		}
 	}
