@@ -8,8 +8,10 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -26,7 +28,8 @@ public class GameFrame extends JPanel implements ActionListener {
 	static Player player = new Player(0, 580);
 	Timer mainTimer;
 	static ArrayList<ArrayTile> TileArray = new ArrayList<ArrayTile>();
-	static boolean won = false;
+	static boolean won = false, editor = false;
+	
 	public GameFrame() {
 		setFocusable(true);
 		setBackground(Color.LIGHT_GRAY);
@@ -76,8 +79,6 @@ public class GameFrame extends JPanel implements ActionListener {
 		}
 		
 		return TileArray.get(xPos).tile;
-
-		
 	}
 	
 	public int getTileID(int x, int y) {
@@ -91,7 +92,9 @@ public class GameFrame extends JPanel implements ActionListener {
 	}
 	
 	public Point getTileCoordFromID(int id) {
-		int xPos = id, yPos = 0;
+		
+		int xPos = id;
+		int yPos = 0;
 		for(; xPos > 50;) {
 			xPos -= 50;
 			yPos += 1;
@@ -101,17 +104,34 @@ public class GameFrame extends JPanel implements ActionListener {
 	
 	public static void setTile(int x, int y, String type) {
 		
-
 		ArrayTile aTile = new ArrayTile(type, x, y);
 		TileArray.add(aTile);
 	}
 	
 	
 	public static void resetLevel() {
+		
 		player.setClear("Red");
 		player.teleport(0, 580);
 		player.gravity=0;
 		loadLevel();
+	}
+	
+	public static void saveLevel() {
+		try {
+			FileOutputStream fileOut = new FileOutputStream("resources/Levels/level.pal");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(TileArray);
+			out.close();
+			fileOut.close();
+			System.out.println("Data written to resources/Levels/level.pal");
+		} catch(IOException i) {
+			i.printStackTrace();
+		}
+		
+		for (int i = 0; i < TileArray.size(); i ++) {
+			System.out.println("setTile(" + TileArray.get(i).x + ", " + TileArray.get(i).y + ", \"" + TileArray.get(i).tile.type + "\");");
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -133,10 +153,17 @@ public class GameFrame extends JPanel implements ActionListener {
 	}
 	
 	
-	public static void Party() {
+	public static void party() {
 		won = true;
 	}
 	
+	public static void toggleEditor() {
+		editor = !editor;
+	}
+	
+	public static boolean isInEditorMode() {
+		return editor;
+	}
 }
 
 

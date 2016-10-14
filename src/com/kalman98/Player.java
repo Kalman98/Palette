@@ -1,5 +1,6 @@
 package com.kalman98;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -10,14 +11,35 @@ import javax.swing.ImageIcon;
 
 public class Player {
 
-	int x, y, dX, dY, velX, velY, jumpTimer = 0, gravity = 0, up, down, left, right, jumpLength = 20;
+	int x, y, dX, dY, velX, velY, jumpTimer = 0, gravity = 0, up, down, left, right, jumpLength = 20, listCycle = 0;
 	Rectangle gravRect = new Rectangle();
 	String image;
 	boolean jumpWait = false, onGround = false;
+	ArrayList<String> tileList = new ArrayList<String>();
 	ArrayList<String> clearTiles = new ArrayList<String>();
 	public Player(int x, int y) {
 		this.x = x;
 		this.y = y;
+		
+		this.tileList.add("Red");
+		this.tileList.add("Blue");
+		this.tileList.add("Yellow");
+		this.tileList.add("Orange");
+		this.tileList.add("Purple");
+		this.tileList.add("Green");
+		this.tileList.add("Red_Spike");
+		this.tileList.add("Blue_Spike");
+		this.tileList.add("Yellow_Spike");
+		this.tileList.add("Orange_Spike");
+		this.tileList.add("Purple_Spike");
+		this.tileList.add("Green_Spike");
+		this.tileList.add("Grav_Down");
+		this.tileList.add("Grav_Left");
+		this.tileList.add("Grav_Up");
+		this.tileList.add("Grav_Right");
+		this.tileList.add("Black");
+		this.tileList.add("Goal");
+		
 		this.image = "resources/Character/Player_2.png";
 		this.setClear("Red");
 	}
@@ -122,7 +144,8 @@ public class Player {
 			}
 		}
 		
-		int mX = this.velX, mY = this.velY;
+		int mX = this.velX;
+		int mY = this.velY;
 		
 		
 		this.dX = (this.x + mX);
@@ -150,7 +173,7 @@ public class Player {
 					if (boundsX.intersects(tiles.get(i))) goalTouch = true;
 					if (boundsY.intersects(tiles.get(i))) goalTouch = true;
 					if (goalTouch) {
-						GameFrame.Party();
+						GameFrame.party();
 					}
 				}
 				boolean clear = false;
@@ -195,24 +218,41 @@ public class Player {
 	}
 	
 	public void draw(Graphics2D g2d) {
-		g2d.drawImage(this.getImage(), this.x, this.y, null);
+		if (!GameFrame.isInEditorMode()) g2d.drawImage(this.getImage(), this.x, this.y, null);
+		else {
+			g2d.setColor(Color.CYAN);
+			g2d.drawRect(this.x * 16, this.y * 16, 16, 16);
+		}
 	}
 	
 	public Image getImage() {
-		ImageIcon ic = new ImageIcon(this.image);
+		ImageIcon ic;
+		if (!GameFrame.isInEditorMode()) ic = new ImageIcon(this.image);
+		else ic = new ImageIcon("resources/Tiles/" + this.tileList.get(listCycle) + ".png");
 		return ic.getImage();
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_D || key == KeyEvent.VK_E) this.right = 1;
-		if (key == KeyEvent.VK_A || key == KeyEvent.VK_A) this.left = 1;
-		if (key == KeyEvent.VK_W || key == KeyEvent.VK_COMMA) this.up = 1;
-		if (key == KeyEvent.VK_S || key == KeyEvent.VK_O) this.down = 1;
-		if (key == KeyEvent.VK_R || key == KeyEvent.VK_P) GameFrame.resetLevel();
-		if (key == KeyEvent.VK_ESCAPE) {
-			//System.out.println("Shutdown requested. Closing now...");
-			//System.exit(0);
+		
+		if (key == KeyEvent.VK_I || key == KeyEvent.VK_C) GameFrame.toggleEditor();
+		
+		if (!GameFrame.isInEditorMode()) {
+			if (key == KeyEvent.VK_D || key == KeyEvent.VK_E) this.right = 1;
+			if (key == KeyEvent.VK_A || key == KeyEvent.VK_A) this.left = 1;
+			if (key == KeyEvent.VK_W || key == KeyEvent.VK_COMMA) this.up = 1;
+			if (key == KeyEvent.VK_S || key == KeyEvent.VK_O) this.down = 1;
+			if (key == KeyEvent.VK_R || key == KeyEvent.VK_P) GameFrame.resetLevel();
+		} else {
+			if (key == KeyEvent.VK_E) this.x ++ ;
+			if (key == KeyEvent.VK_A) this.x --;
+			if (key == KeyEvent.VK_COMMA) this.y --;
+			if (key == KeyEvent.VK_O) this.y ++;
+			if (key == KeyEvent.VK_SPACE) this.setTile();
+			if (key == KeyEvent.VK_RIGHT) this.listCycle ++;
+			if (key == KeyEvent.VK_LEFT) this.listCycle --;
+			if (key == KeyEvent.VK_BACK_SPACE) this.removeTile();
+			if (key == KeyEvent.VK_ENTER) GameFrame.saveLevel();	
 		}
 	}
 	
@@ -258,4 +298,16 @@ public class Player {
 		this.y = y;
 	}
 	
+	public void setTile() {
+		this.removeTile();
+		ArrayTile aTile = new ArrayTile(tileList.get(listCycle), this.x, this.y);
+		GameFrame.TileArray.add(aTile);
+	}
+	
+	public void removeTile() {
+		for (int i = 0; i < GameFrame.TileArray.size(); i ++) {
+			if (GameFrame.TileArray.get(i).x == this.x && GameFrame.TileArray.get(i).y == this.y)
+				GameFrame.TileArray.remove(i);
+		}
+	}
 }
